@@ -1,5 +1,7 @@
 package fact.it.utopia_edgeservice.controller;
 
+import fact.it.utopia_edgeservice.model.Question;
+import fact.it.utopia_edgeservice.model.Station;
 import fact.it.utopia_edgeservice.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,9 +23,9 @@ public class EdgeServiceController {
     private RestTemplate restTemplate;
     @Value("${userservice.baseurl}")
     private String userServiceBaseUrl;
-   /* @Value("${ganeservice.baseurl}")
+    @Value("${gameservice.baseurl}")
     private String gameServiceBaseUrl;
-*/
+
     /* --- USER REQUESTS --- */
     @GetMapping("/users")
     public List<User> getAllUsers(){
@@ -39,7 +41,7 @@ public class EdgeServiceController {
                 User.class, userID);
     }
 
-    /* CREATE NEW USER */
+    // CREATE NEW USER
     @PostMapping("user")
     public User createNewUser(@RequestParam String username, @RequestParam Integer birthyear, @RequestParam String interest){
         /*Get user count*/
@@ -52,7 +54,7 @@ public class EdgeServiceController {
                 u, User.class);
     }
 
-    /* UPDATE USER */
+    // UPDATE USER
     @PutMapping("user")
     public ResponseEntity<Void> updateScore(@RequestBody User u ){
 
@@ -71,6 +73,34 @@ public class EdgeServiceController {
                         });
         return responseEntityUsers.getBody();
     }
+
+    /* --- GAME DATA --- */
+    @GetMapping("/stations")
+    public List<Station> getAllStation(){
+        ResponseEntity<List<Station>> responseEntityStations =
+                restTemplate.exchange(http + gameServiceBaseUrl + "/stations",
+                        HttpMethod.GET, null, new ParameterizedTypeReference<List<Station>>() {
+                        });
+        return responseEntityStations.getBody();
+    }
+
+    @GetMapping("station/{stationID}")
+    public Station getStationById(@PathVariable int stationID){
+        return restTemplate.getForObject(http + gameServiceBaseUrl + "/station/{stationID}",
+                Station.class, stationID);
+    }
+
+    @GetMapping("/questions/{stationID}")
+    public List<Question> getAllQuestions(@PathVariable int stationID){
+        ResponseEntity<List<Question>> responseEntityQuestions =
+                restTemplate.exchange(http + gameServiceBaseUrl + "/questions/{stationID}",
+                        HttpMethod.GET, null, new ParameterizedTypeReference<List<Question>>() {
+                        }, stationID);
+       return responseEntityQuestions.getBody();
+    }
+
+
+
 
 
 }
