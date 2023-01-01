@@ -1,5 +1,6 @@
 package fact.it.utopia_edgeservice.controller;
 
+import fact.it.utopia_edgeservice.model.Interest;
 import fact.it.utopia_edgeservice.model.Question;
 import fact.it.utopia_edgeservice.model.Station;
 import fact.it.utopia_edgeservice.model.User;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Random;
 
 @RestController
 public class EdgeServiceController {
@@ -43,12 +45,12 @@ public class EdgeServiceController {
 
     // CREATE NEW USER
     @PostMapping("user")
-    public User createNewUser(@RequestParam String username, @RequestParam Integer birthyear, @RequestParam String interest){
+    public User createNewUser(@RequestParam String username, @RequestParam Integer birthyear, @RequestParam Integer interestID){
         /*Get user count*/
         int userID = getAllUsers().toArray().length + 1;
 
         /* Create new user*/
-        User u = new User(userID, username, interest, birthyear);
+        User u = new User(userID, username, interestID, birthyear);
 
         return restTemplate.postForObject(http + userServiceBaseUrl + "/user",
                 u, User.class);
@@ -99,8 +101,28 @@ public class EdgeServiceController {
        return responseEntityQuestions.getBody();
     }
 
+    @GetMapping("/interests")
+    public List<Interest> getAllInterests(){
+        ResponseEntity<List<Interest>> responseEntityStations =
+                restTemplate.exchange(http + gameServiceBaseUrl + "/interests",
+                        HttpMethod.GET, null, new ParameterizedTypeReference<List<Interest>>() {
+                        });
+        return responseEntityStations.getBody();
+    }
 
+    @GetMapping("/interests/{interestID}")
+    public Interest getInterestById(@PathVariable int interestID){
+        return restTemplate.getForObject(http + gameServiceBaseUrl + "/interests/{interestID}",
+                Interest.class, interestID);
+    }
 
+    @GetMapping("/startstation/{interestID}")
+    public Station getStartStation(@PathVariable int interestID){
+        Interest interestArea = getInterestById(interestID);
+        List<Station> stations = interestArea.getStations();
+        Random rnd = new Random();
+        return stations.get(rnd.nextInt(stations.size()));
+    }
 
 
 }
