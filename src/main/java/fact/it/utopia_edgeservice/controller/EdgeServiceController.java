@@ -1,9 +1,6 @@
 package fact.it.utopia_edgeservice.controller;
 
-import fact.it.utopia_edgeservice.model.Interest;
-import fact.it.utopia_edgeservice.model.Question;
-import fact.it.utopia_edgeservice.model.Station;
-import fact.it.utopia_edgeservice.model.User;
+import fact.it.utopia_edgeservice.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -27,6 +24,8 @@ public class EdgeServiceController {
     private String userServiceBaseUrl;
     @Value("${gameservice.baseurl}")
     private String gameServiceBaseUrl;
+    @Value("${analytic-service.baseurl}")
+    private String analyticserviceBaseUrl;
 
     /* --- USER REQUESTS --- */
     @GetMapping("/users")
@@ -58,7 +57,7 @@ public class EdgeServiceController {
 
     // UPDATE USER
     @PutMapping("user")
-    public ResponseEntity<Void> updateScore(@RequestBody User u ){
+    public ResponseEntity<Void> updateScore(@RequestBody User u){
 
         restTemplate.exchange(http + userServiceBaseUrl + "/user" ,
                 HttpMethod.PUT, new HttpEntity<>(u), User.class);
@@ -124,5 +123,53 @@ public class EdgeServiceController {
         return stations.get(rnd.nextInt(stations.size()));
     }
 
+    @GetMapping("/visits")
+    public List<Visit> getAllVisits() {
+        ResponseEntity<List<Visit>> responseEntityVisits = restTemplate.exchange(http + analyticserviceBaseUrl + "/visits",
+                HttpMethod.GET, null, new ParameterizedTypeReference<List<Visit>>(){});
+        return responseEntityVisits.getBody();
+    }
 
+    @GetMapping("/visits/{stationID}")
+    public List<Visit> getVisitsForStation(@PathVariable int stationID) {
+        ResponseEntity<List<Visit>> responseEntityVisits =
+                restTemplate.exchange(http + analyticserviceBaseUrl + "/visits/{stationID}",
+                        HttpMethod.GET, null, new ParameterizedTypeReference<List<Visit>>() {
+                        }, stationID);
+        return responseEntityVisits.getBody();
+    }
+
+    @GetMapping("/visits/date/{date}")
+    public List<Visit> getVisitForDate(@PathVariable String date) {
+        ResponseEntity<List<Visit>> responseEntityVisits =
+                restTemplate.exchange(http + analyticserviceBaseUrl + "/visits/date/{date}",
+                        HttpMethod.GET, null, new ParameterizedTypeReference<List<Visit>>() {
+                        }, date);
+        return responseEntityVisits.getBody();
+    }
+
+    @GetMapping("/visits/date/{date}/station/{stationID}")
+    public List<Visit> getVisitForDateAndStation(@PathVariable String date, @PathVariable int stationID) {
+        ResponseEntity<List<Visit>> responseEntityVisits =
+                restTemplate.exchange(http + analyticserviceBaseUrl + "/visits/date/{date}/station/{stationID}",
+                        HttpMethod.GET, null, new ParameterizedTypeReference<List<Visit>>() {
+                        },date, stationID);
+        return responseEntityVisits.getBody();
+    }
+
+    @GetMapping("/visits/totalPerStation")
+    public List<Visit> getTotalPerStation() {
+        ResponseEntity<List<Visit>> responseEntityVisits = restTemplate.exchange(http + analyticserviceBaseUrl + "/visits/totalPerStation",
+                HttpMethod.GET, null, new ParameterizedTypeReference<List<Visit>>(){});
+        return responseEntityVisits.getBody();
+    }
+
+    @PutMapping("/visit")
+    public ResponseEntity<Void> updateScore(@RequestBody VisitDTO v){
+
+        restTemplate.exchange(http + analyticserviceBaseUrl + "/visit",
+                HttpMethod.PUT, new HttpEntity<>(v), VisitDTO.class);
+
+        return ResponseEntity.ok().build();
+    }
 }
