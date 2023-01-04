@@ -43,16 +43,15 @@ public class EdgeServiceController {
     }
 
     // CREATE NEW USER
+
+
     @PostMapping("user")
-    public User createNewUser(@RequestParam String username, @RequestParam Integer birthyear, @RequestParam Integer interestID){
-        /*Get user count*/
+    public User createNewUser(@RequestBody User u) {
         int userID = getAllUsers().toArray().length + 1;
 
-        /* Create new user*/
-        User u = new User(userID, username, interestID, birthyear);
+        User user = new User(userID, u.getName(), u.getInterestID(), u.getBirthyear());
 
-        return restTemplate.postForObject(http + userServiceBaseUrl + "/user",
-                u, User.class);
+        return restTemplate.postForObject(http + userServiceBaseUrl + "/user", u, User.class);
     }
 
     // UPDATE USER
@@ -98,6 +97,12 @@ public class EdgeServiceController {
                         HttpMethod.GET, null, new ParameterizedTypeReference<List<Question>>() {
                         }, stationID);
        return responseEntityQuestions.getBody();
+    }
+
+    @GetMapping("/question/{questionID}")
+    public Question getQuestion(@PathVariable int questionID){
+        return restTemplate.getForObject(http + gameServiceBaseUrl + "/question/{questionID}",
+                Question.class, questionID);
     }
 
     @GetMapping("/interests")
@@ -165,8 +170,8 @@ public class EdgeServiceController {
     }
 
     @PutMapping("/visit")
-    public ResponseEntity<Void> updateScore(@RequestBody VisitDTO v){
-
+    public ResponseEntity<Void> updateScore(@RequestParam Integer stationID, @RequestParam Integer interestID) {
+        VisitDTO v = new VisitDTO(stationID, interestID);
         restTemplate.exchange(http + analyticserviceBaseUrl + "/visit",
                 HttpMethod.PUT, new HttpEntity<>(v), VisitDTO.class);
 
