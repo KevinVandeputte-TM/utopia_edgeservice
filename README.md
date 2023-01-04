@@ -4,7 +4,7 @@
 This is the repository for the edge microservice for the **UTOPIA 2.0** project.
 
 This architecture looks like:
-![Architecture](https://user-images.githubusercontent.com/74854941/210539069-c115375b-e8c8-40fa-b902-e74523998692.png)
+![Architecture](https://user-images.githubusercontent.com/74854941/210539407-b76edabf-bc06-4405-9df6-5d5056cc99c0.png)
 
 ## Description
 The application is a POC for a new explorative tool/game that helps students discovering different bachelor degree options.
@@ -29,6 +29,10 @@ The application will send requests to the `edge-service` which will connect to 2
   The service is a Spring Boot REST Microservice which connects to a Dockerized `MongoDB` database. The service is responsible for providing the game with all necessary user information. `Github Actions` are used to establish a CI/CD pipeline for compiling, testing, and building the container. Finally, the `Docker Container` is uploaded to `Docker Hub`.
 
 
+- [ANALYTIC-SERVICE](https://github.com/KevinVandeputte-TM/utopia_analytic-service):
+
+  The service is a Spring Boot REST Microservice which connects to a Dockerized `MongoDB` database. The service is responsible for providing the game with analytics data of visits per station. `Github Actions` are used to establish a CI/CD pipeline for compiling, testing, and building the container. Finally, the `Docker Container` is uploaded to `Docker Hub`.
+
 - [DEPLOYMENT](https://github.com/KevinVandeputte-TM/utopia_microservices-docker-compose):
 
   The backend was deployed on `Okteto`. Therefor a seperate repository was created containing a single `Docker compose` file which gives the instructions to pull the necessary images of `docker hub` and set up all microservices and underlying databases.
@@ -47,16 +51,24 @@ Set up the Docker Container with the MongoDB database:
 docker run --name users-mongodb -p 27017:27017 -d mongo 
 ```
 
-Once this is done you can start the `game-service` and `user-service` applications. These applications include a method to fill up the databases with dummy information for testing purposes.
+Set up the Docker container with the second MongoDB database:
+``` pwsh
+docker run --name analytics-mongodb -p 27018:27018 -d mongo 
+```
+
+Once this is done you can start the `game-service`, `user-service` and `analytics-service` applications. These applications include a method to fill up the databases with dummy information for testing purposes.
 
 Before running the `edge-service` you should know that it, right now, is set up to be deployed. For you to run the project locally you need to go into the `application.properties` file and change following lines of code:
 
     userservice.baseurl = ${USER_SERVICE_BASEURL:192.168.99.100:8052}
     gameservice.baseurl = ${GAME_SERVICE_BASEURL:192.168.99.100:8051}
+    analytics-service.baseurl = ${ANALYTIC_SERVICE_BASEURL: 192.168.99.100:8054}
 into:
 ``` pwsh
 userservice.baseurl = ${USER_SERVICE_BASEURL:localhost:8052}
 gameservice.baseurl = ${GAME_SERVICE_BASEURL:localhost:8051}
+analytic-service.baseurl = ${ANALYTIC_SERVICE_BASEURL: localhost:8054}
+
 ```
 
 After this adjustment you can start the `edge-service` application.
