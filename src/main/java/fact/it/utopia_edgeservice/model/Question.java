@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 public class Question {
 
     private int questionID;
-    private String questiontoask;
+    private String question;
     private String correctanswer;
     private String fOne;
     private String fTwo;
@@ -23,12 +23,12 @@ public class Question {
         this.questionID = questionID;
     }
 
-    public String getQuestiontoask() {
-        return questiontoask;
+    public String getQuestion() {
+        return question;
     }
 
-    public void setQuestiontoask(String questiontoask) {
-        this.questiontoask = questiontoask;
+    public void setQuestion(String question) {
+        this.question = question;
     }
 
     public String getCorrectanswer() {
