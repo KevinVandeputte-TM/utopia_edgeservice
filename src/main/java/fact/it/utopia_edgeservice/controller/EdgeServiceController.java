@@ -51,7 +51,7 @@ public class EdgeServiceController {
 
         User user = new User(userID, u.getName(), u.getInterestID(), u.getBirthyear());
 
-        return restTemplate.postForObject(http + userServiceBaseUrl + "/user", u, User.class);
+        return restTemplate.postForObject(http + userServiceBaseUrl + "/user", user, User.class);
     }
 
     // UPDATE USER
