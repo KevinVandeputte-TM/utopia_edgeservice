@@ -4,7 +4,7 @@
 This is the repository for the edge microservice for the **UTOPIA 2.0** project.
 
 This architecture looks like:
-![Architecture](https://user-images.githubusercontent.com/74854941/210558214-8f53fe4b-07e8-4adb-ac99-753d0411abf3.png)
+![Architecture](https://user-images.githubusercontent.com/74854941/212331230-51928e58-2716-4c36-bc2e-1d7ab5c9ae2b.png)
 
 ## Description
 The application is a POC for a new explorative tool/game that helps students discovering different bachelor degree options.
@@ -32,6 +32,10 @@ The application will send requests to the `edge-service` which will connect to 3
 - [ANALYTIC-SERVICE](https://github.com/KevinVandeputte-TM/utopia_analytic-service):
 
   The service is a Spring Boot REST Microservice which connects to a Dockerized `MongoDB` database. The service is responsible for providing the game with analytics data of visits per station. `Github Actions` are used to establish a CI/CD pipeline for compiling, testing, and building the container. Finally, the `Docker Container` is uploaded to `Docker Hub`.
+  
+- [FEEDBACK-SERVICE](https://github.com/KevinVandeputte-TM/utopia_feedback-service):
+
+  The service is a Spring Boot REST service which connects to a Dockerized `MongoDB` database. The service is responsible for collecting feedback from the users after playing the game. `Github Actions` are used to establish a CI/CD pipeline for compiling, testing, and building the container. Finally, the `Docker Container` is uploaded to `Docker Hub`.
 
 - [DEPLOYMENT](https://github.com/KevinVandeputte-TM/utopia_microservices-docker-compose):
 
