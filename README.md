@@ -4,7 +4,7 @@
 This is the repository for the edge microservice for the **UTOPIA 2.0** project.
 
 This architecture looks like:
-![Architecture](https://user-images.githubusercontent.com/74854941/212556738-003deec2-3def-4fa8-a719-13921b86f63e.png)
+![Architecture](https://user-images.githubusercontent.com/74854941/212564316-a6d3f4fb-cc44-4343-9acc-cf29e612ec1b.png)
 
 ## Description
 The application is a POC for a new explorative tool/game that helps students discovering different bachelor degree options.
