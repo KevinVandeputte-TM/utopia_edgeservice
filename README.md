@@ -11,7 +11,7 @@ The application is a POC for a new explorative tool/game that helps students dis
 
 The application was created in `Unity` and is a 2D isometric game. The repo for the application can be found [here](https://github.com/KevinVandeputte-TM/utopia).
 
-The application will send requests to the `edge-service` which will connect to 3 lower microservices `game-service`, `userservice` and `analytics-service` to request information which it then will process and combine into a single response to the user. The user will only communicate directly with the `edge-service`.
+The application will send requests to the `edge-service` which will connect to 3 lower microservices `game-service`, `userservice` and `analytics-service` to request information which it then will process and combine into a single response to the user. Besides the `edge-service`, a service dedicated for collecting feedback will be operating independently as this is unrelated to the game itself.
 
 ### Repo's (Click the repo name)
 - [EDGE-SERVICE](https://github.com/KevinVandeputte-TM/utopia_edgeservice):
@@ -39,7 +39,7 @@ The application will send requests to the `edge-service` which will connect to 3
 
 - [DEPLOYMENT](https://github.com/KevinVandeputte-TM/utopia_microservices-docker-compose):
 
-  The backend was deployed on `Okteto`. Therefor a seperate repository was created containing a single `Docker compose` file which gives the instructions to pull the necessary images of `docker hub` and set up all microservices and underlying databases.
+  The backend was deployed on `Okteto`. Therefore a seperate repository was created containing a single `Docker compose` file which gives the instructions to pull the necessary images of `docker hub` and set up all microservices and underlying databases.
 
 # Running the example locally
 
@@ -58,6 +58,12 @@ docker run --name users-mongodb -p 27017:27017 -d mongo
 Set up the Docker container with the second MongoDB database:
 ``` pwsh
 docker run --name analytics-mongodb -p 27018:27018 -d mongo 
+```
+
+Services connecting to MongoDB need some additional code in `application.properties` to connect to the dockerized MongoDB database. Below you can find an example for the `user-service`:
+``` pwsh
+spring.data.mongodb.database=users-mongodb
+spring.data.mongodb.uri=mongodb://localhost/users-mongodb
 ```
 
 Once this is done you can start the `game-service`, `user-service` and `analytics-service` applications. These applications include a method to fill up the databases with dummy information for testing purposes.
@@ -84,6 +90,11 @@ http://localhost:8053/highscores
 And you should see a similar output:
 
 ![localhost](https://user-images.githubusercontent.com/58487061/210269210-9888dbc5-2f13-4348-8256-a6a2cd4dbd22.png)
+
+Lastly, the `feedback-service` can be started in a similar way like above. Set up the Docker container with the third MongoDB database:
+``` pwsh
+docker run --name feedback-mongodb -p 27019:27019 -d mongo
+```
 
 # Testing
 
