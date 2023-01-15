@@ -16,7 +16,7 @@ import java.util.Random;
 @RestController
 public class EdgeServiceController {
 
-    String http = "http://";
+    String http = "https://";
 
     @Autowired
     private RestTemplate restTemplate;
