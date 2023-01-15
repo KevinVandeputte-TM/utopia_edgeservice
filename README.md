@@ -9,7 +9,7 @@ This architecture looks like:
 ## Description
 The application is a POC for a new explorative tool/game that helps students discovering different bachelor degree options.
 
-The application was created in `Unity` and is a 2D isometric game. The repo for the application can be found [here](https://github.com/KevinVandeputte-TM/utopia).
+The application was created in `Unity` and is a 2D isometric game. The repo for the application can be found [here](https://github.com/KevinVandeputte-TM/utopia). Game statistics that are generated when playing the game can be consulted on a qlik sense dashboard. 
 
 The application will send requests to the `edge-service` which will connect to 3 lower microservices `game-service`, `userservice` and `analytics-service` to request information which it then will process and combine into a single response to the user. Besides the `edge-service`, a service dedicated for collecting feedback will be operating independently as this is unrelated to the game itself.
 
@@ -95,6 +95,7 @@ Lastly, the `feedback-service` can be started in a similar way like above. Set u
 ``` pwsh
 docker run --name feedback-mongodb -p 27019:27019 -d mongo
 ```
+Add the connection info to `application.properties` and now you can run the service locally.
 
 # Testing
 
