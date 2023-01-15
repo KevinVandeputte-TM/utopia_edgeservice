@@ -30,6 +30,7 @@ public class EdgeServiceController {
     private String analyticserviceBaseUrl;
 
     /* --- USER REQUESTS --- */
+        @CrossOrigin
     @GetMapping("/users")
     public List<User> getAllUsers(){
         ResponseEntity<List<User>> responseEntityUsers =
@@ -38,6 +39,8 @@ public class EdgeServiceController {
                         });
         return responseEntityUsers.getBody();
     }
+    
+        @CrossOrigin
     @GetMapping("users/{userID}")
     public User getUserById(@PathVariable int userID){
         return restTemplate.getForObject(http + userServiceBaseUrl + "/users/{userID}",
@@ -45,8 +48,6 @@ public class EdgeServiceController {
     }
 
     // CREATE NEW USER
-
-
     @PostMapping("user")
     public User createNewUser(@RequestBody User u) {
         int userID = getAllUsers().toArray().length + 1;
@@ -78,6 +79,7 @@ public class EdgeServiceController {
     }
 
     /* --- GAME DATA --- */
+        @CrossOrigin
     @GetMapping("/stations")
     public List<Station> getAllStation(){
         ResponseEntity<List<Station>> responseEntityStations =
@@ -86,13 +88,13 @@ public class EdgeServiceController {
                         });
         return responseEntityStations.getBody();
     }
-
+    @CrossOrigin
     @GetMapping("station/{stationID}")
     public Station getStationById(@PathVariable int stationID){
         return restTemplate.getForObject(http + gameServiceBaseUrl + "/station/{stationID}",
                 Station.class, stationID);
     }
-
+    @CrossOrigin
     @GetMapping("/questions/{stationID}")
     public List<Question> getAllQuestions(@PathVariable int stationID){
         ResponseEntity<List<Question>> responseEntityQuestions =
@@ -101,13 +103,13 @@ public class EdgeServiceController {
                         }, stationID);
        return responseEntityQuestions.getBody();
     }
-
+    @CrossOrigin
     @GetMapping("/question/{questionID}")
     public Question getQuestion(@PathVariable int questionID){
         return restTemplate.getForObject(http + gameServiceBaseUrl + "/question/{questionID}",
                 Question.class, questionID);
     }
-
+    @CrossOrigin
     @GetMapping("/interests")
     public List<Interest> getAllInterests(){
         ResponseEntity<List<Interest>> responseEntityStations =
@@ -116,13 +118,13 @@ public class EdgeServiceController {
                         });
         return responseEntityStations.getBody();
     }
-
+    @CrossOrigin
     @GetMapping("/interests/{interestID}")
     public Interest getInterestById(@PathVariable int interestID){
         return restTemplate.getForObject(http + gameServiceBaseUrl + "/interests/{interestID}",
                 Interest.class, interestID);
     }
-
+    @CrossOrigin
     @GetMapping("/startstation/{interestID}")
     public Station getStartStation(@PathVariable int interestID){
         Interest interestArea = getInterestById(interestID);
@@ -130,14 +132,14 @@ public class EdgeServiceController {
         Random rnd = new Random();
         return stations.get(rnd.nextInt(stations.size()));
     }
-
+    @CrossOrigin
     @GetMapping("/visits")
     public List<Visit> getAllVisits() {
         ResponseEntity<List<Visit>> responseEntityVisits = restTemplate.exchange(http + analyticserviceBaseUrl + "/visits",
                 HttpMethod.GET, null, new ParameterizedTypeReference<List<Visit>>(){});
         return responseEntityVisits.getBody();
     }
-
+    @CrossOrigin
     @GetMapping("/visits/{stationID}")
     public List<Visit> getVisitsForStation(@PathVariable int stationID) {
         ResponseEntity<List<Visit>> responseEntityVisits =
@@ -146,7 +148,7 @@ public class EdgeServiceController {
                         }, stationID);
         return responseEntityVisits.getBody();
     }
-
+    @CrossOrigin
     @GetMapping("/visits/date/{date}")
     public List<Visit> getVisitForDate(@PathVariable String date) {
         ResponseEntity<List<Visit>> responseEntityVisits =
@@ -155,7 +157,7 @@ public class EdgeServiceController {
                         }, date);
         return responseEntityVisits.getBody();
     }
-
+    @CrossOrigin
     @GetMapping("/visits/date/{date}/station/{stationID}")
     public List<Visit> getVisitForDateAndStation(@PathVariable String date, @PathVariable int stationID) {
         ResponseEntity<List<Visit>> responseEntityVisits =
@@ -164,7 +166,7 @@ public class EdgeServiceController {
                         },date, stationID);
         return responseEntityVisits.getBody();
     }
-
+    @CrossOrigin
     @GetMapping("/visits/totalPerStation")
     public List<Visit> getTotalPerStation() {
         ResponseEntity<List<Visit>> responseEntityVisits = restTemplate.exchange(http + analyticserviceBaseUrl + "/visits/totalPerStation",
