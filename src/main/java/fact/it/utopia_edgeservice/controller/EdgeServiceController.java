@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.Random;
 
@@ -65,6 +67,7 @@ public class EdgeServiceController {
     }
 
     /* --- HIGHSCORES --- */
+    @CrossOrigin
     @GetMapping("/highscores")
     public List<User> getHighscores(){
         ResponseEntity<List<User>> responseEntityUsers =
