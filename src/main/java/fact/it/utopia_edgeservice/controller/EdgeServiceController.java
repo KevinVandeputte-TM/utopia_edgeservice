@@ -48,6 +48,7 @@ public class EdgeServiceController {
     }
 
     // CREATE NEW USER
+         @CrossOrigin
     @PostMapping("user")
     public User createNewUser(@RequestBody User u) {
         int userID = getAllUsers().toArray().length + 1;
@@ -58,6 +59,7 @@ public class EdgeServiceController {
     }
 
     // UPDATE USER
+         @CrossOrigin
     @PutMapping("user")
     public ResponseEntity<Void> updateScore(@RequestBody User u){
 
@@ -173,7 +175,7 @@ public class EdgeServiceController {
                 HttpMethod.GET, null, new ParameterizedTypeReference<List<Visit>>(){});
         return responseEntityVisits.getBody();
     }
-
+     @CrossOrigin
     @PutMapping("/visit")
     public ResponseEntity<Void> updateScore(@RequestParam Integer stationID, @RequestParam Integer interestID) {
         VisitDTO v = new VisitDTO(stationID, interestID);
