@@ -65,6 +65,7 @@ Services connecting to MongoDB need some additional code in `application.propert
 spring.data.mongodb.database=users-mongodb
 spring.data.mongodb.uri=mongodb://localhost/users-mongodb
 ```
+Additionaly, in the `application.properties` of the `analytics-service`, it is important to match the port number with its mongodb database. Change the port-number from 27017 to 27018 to achieve this.
 
 Once this is done you can start the `game-service`, `user-service` and `analytics-service` applications. These applications include a method to fill up the databases with dummy information for testing purposes.
 
@@ -95,7 +96,7 @@ Lastly, the `feedback-service` can be started in a similar way like above. Set u
 ``` pwsh
 docker run --name feedback-mongodb -p 27019:27019 -d mongo
 ```
-Add the connection info to `application.properties` and now you can run the service locally.
+Add the connection info and adjust the port number to match the mongodb database in `application.properties` and now you can run the service locally.
 
 # Testing
 
